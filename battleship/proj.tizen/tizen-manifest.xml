@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="2.3" package="com.pucpr.battleship" version="1.0.0">
+    <ui-application appid="com.pucpr.battleship" exec="hellocpp" multiple="false" nodisplay="false" taskmanage="true" type="capp">
+        <label>battleship</label>
+        <icon>battleship.png</icon>
+    </ui-application>
+</manifest>
