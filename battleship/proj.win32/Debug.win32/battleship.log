@@ -1,0 +1,7 @@
+﻿  MainGameScene.h
+  main.cpp
+d:\desenvolvimento\github\battleship\battleship\classes\appdelegate.h(42): warning C4305: 'argument': truncation from 'double' to 'float' (compiling source file main.cpp)
+  60 File(s) copied
+  battleship.vcxproj -> D:\Desenvolvimento\GitHub\battleship\battleship\proj.win32\Debug.win32\battleship.exe
+  battleship.vcxproj -> D:\Desenvolvimento\GitHub\battleship\battleship\proj.win32\Debug.win32\battleship.pdb (Full PDB)
+  0 File(s) copied
