@@ -1,0 +1,6 @@
+ **/.DS_Store
+ 
+ **/*.opendb
+ **/*.VC.db
+ 
+ **/.vs/
