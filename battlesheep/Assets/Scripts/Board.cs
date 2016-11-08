@@ -105,6 +105,16 @@ public class Board : MonoBehaviour
         j = Mathf.RoundToInt(result.z * (_size - 1f));
     }
 
+    public Vector3 PositionForIndex(int i, int j, bool odd)
+    {
+        var position = PositionForIndex(i, j);
+
+        if (odd)
+            position.x += _itemSize * 0.5f;
+
+        return position;
+    }
+
     public Vector3 PositionForIndex(int i, int j)
     {
         var offsetX = Width * -0.5f;

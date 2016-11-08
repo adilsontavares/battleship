@@ -1,23 +1,35 @@
 using UnityEngine;
 
+public enum BoardItemDirection
+{
+    Horizontal,
+    Vertical
+}
+
 public class BoardItem : MonoBehaviour
 {
-    public enum Direction
-    {
-        Horizontal,
-        Vertical
-    }
     
     Board _board {  get { return Board.Main; } }
 
     [SerializeField]
-    private Direction _direction;
+    private BoardItemDirection _direction;
+    public BoardItemDirection Direction
+    {
+        get { return _direction; }
+        set
+        {
+            _direction = value;
+            UpdatePiecesPosition();
+        }
+    }
 
     BoardItemPiece[] _pieces;
     public BoardItemPiece[] Pieces { get { return _pieces; } }
 
-    public float Width { get { return (_direction == Direction.Vertical ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
-    public float Height { get { return (_direction == Direction.Horizontal ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
+    public bool Odd {  get { return _pieces.Length % 2 == 0; } }
+
+    public float Width { get { return (_direction == BoardItemDirection.Vertical ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
+    public float Height { get { return (_direction == BoardItemDirection.Horizontal ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
 
     void Start()
     {
@@ -34,7 +46,7 @@ public class BoardItem : MonoBehaviour
         Vector3 direction;
         Vector3 offset;
 
-        if (_direction == Direction.Horizontal)
+        if (_direction == BoardItemDirection.Horizontal)
         {
             direction = Vector3.right;
             offset = Vector3.left * (Width * 0.5f - _board.ItemSize * 0.5f);

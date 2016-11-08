@@ -3,4 +3,7 @@
  **/*.opendb
  **/*.VC.db
  
- **/.vs/
+.vs/
+ 
+Temp/
+obj/

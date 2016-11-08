@@ -60,11 +60,15 @@ public class BoardPlacer : MonoBehaviour
             int i;
             int j;
 
-            var offset = Vector3.zero;// Vector3.left * _item.Width * 0.5f + Vector3.back * _item.Height * 0.5f;
+            var offset = Vector3.zero;
+
+            if (_item.Odd)
+                offset.x -= Board.ItemSize * 0.5f;
+
             var point = hit.point + offset;
 
             Board.IndexForPosition(point, out i, out j);
-            var position = Board.PositionForIndex(i, j);
+            var position = Board.PositionForIndex(i, j, _item.Odd);
 
             if (_moveDestin != position)
                 _moveDestin = position;
