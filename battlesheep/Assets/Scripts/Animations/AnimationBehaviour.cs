@@ -203,7 +203,10 @@ namespace Tween.Animation
             if (FinishCallback != null)
                 FinishCallback(this);
 
-            Destroy(this);
+            if (!Application.isPlaying)
+                DestroyImmediate(this);
+            else
+                Destroy(this);
         }
     }
 }
