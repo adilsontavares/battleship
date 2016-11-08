@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{0C1D4485-488F-3500-7670-9E02FB6A6CF7}") = "battlesheep", "Assembly-CSharp.csproj", "{D648DF40-E893-08DE-A212-214394BD7E4A}"
+EndProject
+Project("{0C1D4485-488F-3500-7670-9E02FB6A6CF7}") = "battlesheep", "Assembly-CSharp-Editor.csproj", "{F9A70501-ACF7-EC08-27AC-866D18586CA6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D648DF40-E893-08DE-A212-214394BD7E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D648DF40-E893-08DE-A212-214394BD7E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D648DF40-E893-08DE-A212-214394BD7E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D648DF40-E893-08DE-A212-214394BD7E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9A70501-ACF7-EC08-27AC-866D18586CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9A70501-ACF7-EC08-27AC-866D18586CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9A70501-ACF7-EC08-27AC-866D18586CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9A70501-ACF7-EC08-27AC-866D18586CA6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
