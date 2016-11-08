@@ -1,3 +1,5 @@
+using Tween.Animation;
+using Tween.Animation.Ease;
 using UnityEngine;
 
 public enum BoardItemDirection
@@ -8,7 +10,6 @@ public enum BoardItemDirection
 
 public class BoardItem : MonoBehaviour
 {
-
     Board _board { get { return Board.Main; } }
 
     [SerializeField]
@@ -18,10 +19,16 @@ public class BoardItem : MonoBehaviour
         get { return _direction; }
         set
         {
-            _direction = value;
-            UpdatePiecesPosition();
+            if (_direction != value)
+            {
+                _direction = value;
+                DirectionDidChange();
+            }
         }
     }
+
+    Quaternion _fromRotation;
+    Quaternion _toRotation;
 
     BoardItemPiece[] _pieces;
     public BoardItemPiece[] Pieces { get { return _pieces; } }
@@ -45,22 +52,35 @@ public class BoardItem : MonoBehaviour
 
     void UpdatePiecesPosition()
     {
-        Vector3 direction;
-        Vector3 offset = Vector3.zero;
-
-        if (_direction == BoardItemDirection.Horizontal)
-        {
-            direction = Vector3.right;
-            //offset.x -= _board.ItemSize * 0.5f + _board.Spacing * 0.5f;
-        }
-        else
-        {
-            direction = Vector3.forward;
-            //offset.z -= _board.ItemSize * 0.5f + _board.Spacing * 0.5f;
-        }
+        var direction = Vector3.right;
 
         for (int i = 0; i < _pieces.Length; ++i)
-            _pieces[i].transform.localPosition = offset + direction * (_board.Spacing + _board.ItemSize) * i;
+            _pieces[i].transform.localPosition = direction * (_board.Spacing + _board.ItemSize) * i;
+    }
+
+    void DirectionDidChange()
+    {
+        _fromRotation = transform.localRotation;
+
+        if (_direction == BoardItemDirection.Horizontal)
+            _toRotation = Quaternion.identity;
+        else
+            _toRotation = Quaternion.AngleAxis(-90f, Vector3.up);
+
+        this.CreateAnimation<EaseQuintOut>(0.45f, 0f, "rotate-item", updateCallback: OnAnimRotate, single: true);
+    }
+
+    public void Rotate()
+    {
+        if (_direction == BoardItemDirection.Horizontal)
+            Direction = BoardItemDirection.Vertical;
+        else if (_direction == BoardItemDirection.Vertical)
+            Direction = BoardItemDirection.Horizontal;
+    }
+
+    void OnAnimRotate(AnimationBehaviour anim, float time)
+    {
+        transform.localRotation = Quaternion.Lerp(_fromRotation, _toRotation, time);
     }
 
     void OnDrawGizmos()

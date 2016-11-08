@@ -116,6 +116,7 @@
     <Compile Include="Assets\Scripts\BoardPlacer.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraContainer.cs" />
     <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Debug\DebugInformation.cs" />
     <Compile Include="Assets\Scripts\Extensions\ColorExtensions.cs" />
     <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
   </ItemGroup>

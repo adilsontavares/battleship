@@ -12,6 +12,8 @@ public class BoardPlacer : MonoBehaviour
     [SerializeField]
     private float _moveItemSpeed = 15f;
 
+    public KeyCode RotateItemKey = KeyCode.R;
+
     bool _placing = false;
     int _i;
     int _j;
@@ -52,7 +54,12 @@ public class BoardPlacer : MonoBehaviour
     void Update()
     {
         if (_placing)
+        {
+            if (Input.GetKeyDown(RotateItemKey))
+                _item.Rotate();
+
             UpdatePlacement();
+        }
     }
 
     void UpdatePlacement()
@@ -106,13 +113,5 @@ public class BoardPlacer : MonoBehaviour
 
         var position = Board.PositionForIndex(_i, _j);
         Gizmos.DrawCube(position, Vector3.one);
-    }
-
-    void OnGUI()
-    {
-        if (!_placing)
-            return;
-        
-        GUILayout.Button(string.Format("INDEX = {0}, {1}", _i, _j));
     }
 }
