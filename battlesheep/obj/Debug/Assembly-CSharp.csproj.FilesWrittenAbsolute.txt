@@ -15,3 +15,5 @@
 /Users/adilsontavares/GitHub/battleship/battlesheep/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/adilsontavares/GitHub/battleship/battlesheep/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/adilsontavares/GitHub/battleship/battlesheep/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/adilsontavares/GitHub/battleship/battlesheep/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/adilsontavares/GitHub/battleship/battlesheep/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb

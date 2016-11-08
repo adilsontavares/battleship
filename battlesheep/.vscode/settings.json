@@ -63,7 +63,10 @@
 		"project/":true,
 		"obj/":true,
 		"Obj/":true,
-		"ProjectSettings/":true,		"temp/":true,
-		"Temp/":true
+		"ProjectSettings/":true,
+		"temp/":true,
+		"Temp/":true,
+		"**/*.csproj": true,
+		"**/*.sln": true
 	}
 }

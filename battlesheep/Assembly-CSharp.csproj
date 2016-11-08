@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_2;UNITY_5_4;UNITY_5;UNITY_64;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;UNITY_TEAM_LICENSE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_4_2;UNITY_5_4;UNITY_5;UNITY_64;ENABLE_NEW_BUGREPORTER;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_EDITOR_RETINA;ENABLE_RETINA_GUISTYLES;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_SPRITE_POLYGON;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_LOCALIZATION;ENABLE_ANDROID_ATLAS_ETC1_COMPRESSION;ENABLE_EDITOR_TESTS_RUNNER;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLUSTERINPUT;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_OSX;UNITY_TEAM_LICENSE;CROSS_PLATFORM_INPUT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
@@ -48,16 +48,71 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Animations\AnimationBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Animations\Callbacks\CancelCallback.cs" />
+     <Compile Include="Assets\Scripts\Animations\Callbacks\DoneCallback.cs" />
+     <Compile Include="Assets\Scripts\Animations\Callbacks\FinishCallback.cs" />
+     <Compile Include="Assets\Scripts\Animations\Callbacks\StartCallback.cs" />
+     <Compile Include="Assets\Scripts\Animations\Callbacks\UpdateCallback.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\AnimationEaseType.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseBackIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseBackInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseBackOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseBounceIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseBounceInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseBounceOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseCircIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseCircInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseCircOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseCubicIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseCubicInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseCubicOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseElasticIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseElasticInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseElasticOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseExpoIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseExpoInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseExpoOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseLinear.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuadIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuadInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuadOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuartIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuartInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuartOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuintIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuintInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseQuintOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseSineIn.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseSineInOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Ease\EaseSineOut.cs" />
+     <Compile Include="Assets\Scripts\Animations\Extensions.cs" />
+     <Compile Include="Assets\Scripts\Animations\Helpers\AnimationHelper.cs" />
+     <Compile Include="Assets\Scripts\Animations\Interfaces\IAnimationEase.cs" />
      <Compile Include="Assets\Scripts\Board.cs" />
      <Compile Include="Assets\Scripts\BoardItem.cs" />
+     <Compile Include="Assets\Scripts\BoardPlacer.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraContainer.cs" />
+     <Compile Include="Assets\Scripts\Camera\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Debug\DebugInformation.cs" />
      <Compile Include="Assets\Scripts\Extensions\ColorExtensions.cs" />
      <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
+     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Simple.shader" />
+     <None Include="Assets\Standard Assets\Environment\Water (Basic)\Shaders\FXWaterBasic.shader" />
+     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+     <None Include="Assets\Standard Assets\Environment\Water\Water\Shaders\FXWaterPro.shader" />
+     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\WaterInclude.cginc" />
+     <None Include="Assets\Standard Assets\Environment\Water\Water4\Shaders\FXWater4Advanced.shader" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{4D9282C6-9C21-1AFB-3CE5-597175D1DFA3}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

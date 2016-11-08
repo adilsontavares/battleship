@@ -28,7 +28,7 @@ public class Board : MonoBehaviour
 
     private Transform _waterParent;
 
-    private BoardItem[,] _items;
+    private BoardItem[] _items;
 
     public float Width { get { return (_size * _itemSize) + (_size - 1f) * _spacing; } }
 
@@ -51,17 +51,7 @@ public class Board : MonoBehaviour
             return; 
 
         for (int i = 0; i < _items.GetLength(0); ++i)
-        {
-            for (int j = 0; j < _items.GetLength(1); ++j)
-            {
-                var item = _items[i, j];
-                if (item != null)
-                {
-                    Destroy(item.gameObject);
-                    _items[i, j] = null;
-                }
-            }
-        }
+            Destroy(_items[i].gameObject);
     }
 
     void ClearWater()

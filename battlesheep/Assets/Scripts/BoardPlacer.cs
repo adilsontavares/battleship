@@ -72,16 +72,7 @@ public class BoardPlacer : MonoBehaviour
             int i;
             int j;
 
-            var offset = Vector3.zero;
-
-            if (_item.Odd)
-            {
-                if (_item.Direction == BoardItemDirection.Horizontal)
-                    offset.x -= _item.Width * 0.5f + Board.Spacing * 0.5f;
-                else if (_item.Direction == BoardItemDirection.Vertical)
-                    offset.z -= _item.Height * 0.5f + Board.Spacing * 0.5f;
-            }
-            
+            var offset = Vector3.zero;            
             var point = hit.point + offset;
 
             Board.IndexForPosition(point, out i, out j);

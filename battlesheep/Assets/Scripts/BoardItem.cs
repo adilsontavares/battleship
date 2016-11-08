@@ -12,6 +12,11 @@ public class BoardItem : MonoBehaviour
 {
     Board _board { get { return Board.Main; } }
 
+    public Transform Model;
+
+    [Range(1, 6)]
+    public int Size = 2;
+
     [SerializeField]
     private BoardItemDirection _direction;
     public BoardItemDirection Direction
@@ -30,42 +35,47 @@ public class BoardItem : MonoBehaviour
     Quaternion _fromRotation;
     Quaternion _toRotation;
 
-    BoardItemPiece[] _pieces;
-    public BoardItemPiece[] Pieces { get { return _pieces; } }
-
     public bool Odd { get { return Size % 2 == 0; } }
-    public int Size { get { return _pieces.Length; } }
 
-    public float Width { get { return (_direction == BoardItemDirection.Vertical ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
-    public float Height { get { return (_direction == BoardItemDirection.Horizontal ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
+    public float Width { get { return (_direction == BoardItemDirection.Vertical ? _board.ItemSize : (_board.ItemSize * Size + _board.Spacing * (Size - 1))); } }
+    public float Height { get { return (_direction == BoardItemDirection.Horizontal ? _board.ItemSize : (_board.ItemSize * Size + _board.Spacing * (Size - 1))); } }
     public float Length { get { return (_direction == BoardItemDirection.Horizontal ? Width : Height); } }
 
     void Start()
     {
-        _pieces = GetComponentsInChildren<BoardItemPiece>();
+        if (Model == null)
+            Model = transform.GetChild(0);
 
         Debug.Assert(_board != null, "No board was found.");
-        Debug.Assert(_pieces.Length > 0, "BoardItem must have at lease 1 piece.");
+        Debug.Assert(Model != null, "BoardItem has no Model.");
 
-        UpdatePiecesPosition();
+        Model.Reset();
+        UpdateModelTransform();
+
+        transform.localRotation = GetModelRotation();
     }
 
-    void UpdatePiecesPosition()
+    void UpdateModelTransform()
     {
-        var direction = Vector3.right;
+        Model.localPosition = Vector3.forward * (-_board.ItemSize * 0.5f - _board.Spacing * 0.5f + Length * 0.5f);
+    }
 
-        for (int i = 0; i < _pieces.Length; ++i)
-            _pieces[i].transform.localPosition = direction * (_board.Spacing + _board.ItemSize) * i;
+    Quaternion GetModelRotation()
+    {
+        Quaternion rotation = Quaternion.identity;
+
+        if (_direction == BoardItemDirection.Horizontal)
+            rotation = Quaternion.AngleAxis(90f, Vector3.up);
+        else if (_direction == BoardItemDirection.Vertical)
+            rotation = Quaternion.identity;
+
+        return rotation;
     }
 
     void DirectionDidChange()
     {
         _fromRotation = transform.localRotation;
-
-        if (_direction == BoardItemDirection.Horizontal)
-            _toRotation = Quaternion.identity;
-        else
-            _toRotation = Quaternion.AngleAxis(-90f, Vector3.up);
+        _toRotation = GetModelRotation();
 
         this.CreateAnimation<EaseQuintOut>(0.45f, 0f, "rotate-item", updateCallback: OnAnimRotate, single: true);
     }
