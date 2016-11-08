@@ -8,4 +8,14 @@ public static class TransformExtensions
         transform.localRotation = Quaternion.identity;
         transform.localScale = Vector3.one; 
     }
+
+    public static T GetOrAddComponent<T>(this Transform transform) where T : Component
+    {
+        var component = transform.GetComponent<T>();
+
+        if (component == null)
+            component = transform.gameObject.AddComponent<T>();
+
+        return component;
+    }
 }

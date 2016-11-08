@@ -1,0 +1,37 @@
+﻿namespace Tween.Animation.Ease
+{
+    public enum AnimationEaseType
+    {
+        EaseBackIn,
+        EaseBackOut,
+        EaseBackInOut,
+        EaseBounceIn,
+        EaseBounceOut,
+        EaseBounceInOut,
+        EaseCircIn,
+        EaseCircOut,
+        EaseCircInOut,
+        EaseCubicIn,
+        EaseCubicOut,
+        EaseCubicInOut,
+        EaseElasticIn,
+        EaseElasticOut,
+        EaseElasticInOut,
+        EaseExpoIn,
+        EaseExpoOut,
+        EaseExpoInOut,
+        EaseLinear,
+        EaseQuadIn,
+        EaseQuadOut,
+        EaseQuadInOut,
+        EaseQuartIn,
+        EaseQuartOut,
+        EaseQuartInOut,
+        EaseQuintIn,
+        EaseQuintOut,
+        EaseQuintInOut,
+        EaseSineIn,
+        EaseSineOut,
+        EaseSineInOut
+    }
+}
