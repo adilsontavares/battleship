@@ -13,6 +13,9 @@ public class BoardPlacer : MonoBehaviour
     private float _moveItemSpeed = 15f;
 
     bool _placing = false;
+    int _i;
+    int _j;
+
     Vector3 _moveDestin;
     Camera _mainCamera;
 
@@ -23,7 +26,7 @@ public class BoardPlacer : MonoBehaviour
         Debug.Assert(Board != null, "BoardPlacer must have a Board to manage.");
 
         if (_item != null)
-            BeginPlacement(_item);    
+            BeginPlacement(_item);
     }
 
     public void BeginPlacement(BoardItem item)
@@ -42,6 +45,8 @@ public class BoardPlacer : MonoBehaviour
         _placing = false;
 
         _item = null;
+        _i = -1;
+        _j = -1;
     }
 
     void Update()
@@ -63,30 +68,51 @@ public class BoardPlacer : MonoBehaviour
             var offset = Vector3.zero;
 
             if (_item.Odd)
-                offset.x -= Board.ItemSize * 0.5f;
-
+            {
+                if (_item.Direction == BoardItemDirection.Horizontal)
+                    offset.x -= _item.Width * 0.5f + Board.Spacing * 0.5f;
+                else if (_item.Direction == BoardItemDirection.Vertical)
+                    offset.z -= _item.Height * 0.5f + Board.Spacing * 0.5f;
+            }
+            
             var point = hit.point + offset;
 
             Board.IndexForPosition(point, out i, out j);
-            var position = Board.PositionForIndex(i, j, _item.Odd);
 
-            if (_moveDestin != position)
+            var min = 0;
+            var max = Board.Size - _item.Size;
+
+            if (_item.Direction == BoardItemDirection.Horizontal)
+                i = Mathf.Clamp(i, min, max);
+            else if (_item.Direction == BoardItemDirection.Vertical)
+                j = Mathf.Clamp(j, min, max);
+
+            if (i != _i || j != _j)
+            {
+                _i = i;
+                _j = j;
+
+                var position = Board.PositionForIndex(i, j);
                 _moveDestin = position;
+            }
         }
 
         _item.transform.position = Vector3.Lerp(_item.transform.position, _moveDestin, Time.deltaTime * _moveItemSpeed);
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+
+        var position = Board.PositionForIndex(_i, _j);
+        Gizmos.DrawCube(position, Vector3.one);
     }
 
     void OnGUI()
     {
         if (!_placing)
             return;
-
-        int i;
-        int j;
-
-        Board.IndexForPosition(_item.transform.position, out i, out j);
-
-        GUILayout.Button(string.Format("INDEX = {0}, {1}", i, j));
+        
+        GUILayout.Button(string.Format("INDEX = {0}, {1}", _i, _j));
     }
 }

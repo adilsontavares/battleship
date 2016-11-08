@@ -105,12 +105,17 @@ public class Board : MonoBehaviour
         j = Mathf.RoundToInt(result.z * (_size - 1f));
     }
 
-    public Vector3 PositionForIndex(int i, int j, bool odd)
+    public Vector3 PositionForIndex(int i, int j, BoardItemDirection direction, bool odd)
     {
         var position = PositionForIndex(i, j);
 
         if (odd)
-            position.x += _itemSize * 0.5f;
+        {
+            if (direction == BoardItemDirection.Horizontal)
+                position.x += _itemSize * 0.5f + Spacing * 0.5f;
+            else if (direction == BoardItemDirection.Vertical)
+                position.z += _itemSize * 0.5f + Spacing * 0.5f;
+        }
 
         return position;
     }

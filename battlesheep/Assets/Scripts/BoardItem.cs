@@ -8,8 +8,8 @@ public enum BoardItemDirection
 
 public class BoardItem : MonoBehaviour
 {
-    
-    Board _board {  get { return Board.Main; } }
+
+    Board _board { get { return Board.Main; } }
 
     [SerializeField]
     private BoardItemDirection _direction;
@@ -26,10 +26,12 @@ public class BoardItem : MonoBehaviour
     BoardItemPiece[] _pieces;
     public BoardItemPiece[] Pieces { get { return _pieces; } }
 
-    public bool Odd {  get { return _pieces.Length % 2 == 0; } }
+    public bool Odd { get { return Size % 2 == 0; } }
+    public int Size { get { return _pieces.Length; } }
 
     public float Width { get { return (_direction == BoardItemDirection.Vertical ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
     public float Height { get { return (_direction == BoardItemDirection.Horizontal ? _board.ItemSize : (_board.ItemSize * _pieces.Length + _board.Spacing * (_pieces.Length - 1))); } }
+    public float Length { get { return (_direction == BoardItemDirection.Horizontal ? Width : Height); } }
 
     void Start()
     {
@@ -44,17 +46,17 @@ public class BoardItem : MonoBehaviour
     void UpdatePiecesPosition()
     {
         Vector3 direction;
-        Vector3 offset;
+        Vector3 offset = Vector3.zero;
 
         if (_direction == BoardItemDirection.Horizontal)
         {
             direction = Vector3.right;
-            offset = Vector3.left * (Width * 0.5f - _board.ItemSize * 0.5f);
+            //offset.x -= _board.ItemSize * 0.5f + _board.Spacing * 0.5f;
         }
         else
         {
             direction = Vector3.forward;
-            offset = Vector3.back * (Height * 0.5f + _board.ItemSize * 0.5f);
+            //offset.z -= _board.ItemSize * 0.5f + _board.Spacing * 0.5f;
         }
 
         for (int i = 0; i < _pieces.Length; ++i)
@@ -67,6 +69,15 @@ public class BoardItem : MonoBehaviour
             return;
 
         Gizmos.color = Color.red.WithAlpha(0.4f);
-        Gizmos.DrawCube(transform.position, new Vector3(Width, 0.001f, Height));
+
+        var offset = -_board.ItemSize * 0.5f + Length * 0.5f;
+        var position = Vector3.zero;
+
+        if (_direction == BoardItemDirection.Horizontal)
+            position = Vector3.right * offset;
+        else if (_direction == BoardItemDirection.Vertical)
+            position = Vector3.forward * offset;
+
+        Gizmos.DrawCube(position + transform.position, new Vector3(Width, 0.001f, Height));
     }
 }
