@@ -8,11 +8,12 @@ public class BoardPlacer : MonoBehaviour
 
     [SerializeField]
     public BoardItem _item;
-
+    
     [SerializeField]
     private float _moveItemSpeed = 15f;
 
     public KeyCode RotateItemKey = KeyCode.R;
+    public string PlaceItemButton = "Fire1";
 
     bool _placing = false;
     int _i;
@@ -58,8 +59,22 @@ public class BoardPlacer : MonoBehaviour
             if (Input.GetKeyDown(RotateItemKey))
                 _item.Rotate();
 
+            if (Input.GetButtonDown(PlaceItemButton))
+                Place();
+
             UpdatePlacement();
         }
+    }
+
+    void Place()
+    {
+        if (!_placing)
+            return;
+
+        //if (Board.CanPlaceItem(_item, _i, _j))
+        //{
+
+        //}
     }
 
     void UpdatePlacement()

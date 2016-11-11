@@ -3,9 +3,9 @@ using UnityEngine;
 public class Board : MonoBehaviour
 {
     public static Board Main {  get { return FindObjectOfType<Board>(); } }
-
-    [SerializeField]
-    private GameObject _waterPrefab;
+    
+    public GameObject WaterPrefab;
+    public GameObject ItemGroundPrefab;
 
     [SerializeField]
     private bool _createWater = true;
@@ -36,7 +36,8 @@ public class Board : MonoBehaviour
 
     void Start()
     {
-        Debug.Assert(_waterPrefab != null, "WaterPrefab cannot be null");
+        Debug.Assert(WaterPrefab != null, "WaterPrefab cannot be null");
+        Debug.Assert(ItemGroundPrefab != null, "ItemGroudPrefab cannot be null");
 
         _waterParent = (new GameObject("Water")).transform;
         _waterParent.parent = this.transform;
@@ -69,7 +70,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < _size; ++j)
             {
-                var water = Instantiate(_waterPrefab);
+                var water = Instantiate(WaterPrefab);
                 var position = PositionForIndex(i, j);
 
                 water.transform.parent = _waterParent;
@@ -78,6 +79,38 @@ public class Board : MonoBehaviour
                 water.transform.localPosition = position + Vector3.down * _waterOffset;
             }
         }
+    }
+
+    public BoardItem ItemAtIndex(Index index)
+    {
+        foreach (var item in _items)
+        {
+            if (item.ContainsIndex(index))
+                return item;
+        }
+
+        return null;
+    }
+
+    public bool ContainsItemAt(Index index)
+    {
+        return ItemAtIndex(index) != null;
+    }
+
+    public bool CanPlaceItem(BoardItem item, Index index)
+    {
+        foreach (var temp in _items)
+        {
+            var indexes = item.GetIndexes();
+
+            foreach (var ind in indexes)
+            {
+                if (ind == index)
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     public void IndexForPosition(Vector3 position, out int i, out int j)

@@ -13,6 +13,7 @@ public class BoardItem : MonoBehaviour
     Board _board { get { return Board.Main; } }
 
     public Transform Model;
+    public Index Index;
 
     [Range(1, 6)]
     public int Size = 2;
@@ -35,6 +36,8 @@ public class BoardItem : MonoBehaviour
     Quaternion _fromRotation;
     Quaternion _toRotation;
 
+    Transform[] _grounds;
+
     public bool Odd { get { return Size % 2 == 0; } }
 
     public float Width { get { return (_direction == BoardItemDirection.Vertical ? _board.ItemSize : (_board.ItemSize * Size + _board.Spacing * (Size - 1))); } }
@@ -53,6 +56,55 @@ public class BoardItem : MonoBehaviour
         UpdateModelTransform();
 
         transform.localRotation = GetModelRotation();
+
+        CreateGrounds();
+    }
+
+    public Index[] GetIndexes()
+    {
+        var indexes = new Index[Size];
+
+        for (int i = 0; i < indexes.Length; ++i)
+        {
+            if (Direction == BoardItemDirection.Horizontal)
+                indexes[i] = new Index(Index.I, Index.J + i);
+            else
+                indexes[i] = new Index(Index.I + i, Index.J);
+        }
+
+        return indexes;
+    }
+
+    public bool ContainsIndex(Index index)
+    {
+        if (index.I < Index.I || index.J < Index.J)
+            return false;
+
+        if (Direction == BoardItemDirection.Horizontal)
+            return index.I == Index.I && index.J < (Index.J + Size);
+
+        if (Direction == BoardItemDirection.Vertical)
+            return index.I < (Index.I + Size) && index.J == Index.J;
+
+        return false;
+    }
+
+    void CreateGrounds()
+    {
+        _grounds = new Transform[Size];
+
+        for (int i = 0; i < Size; ++i)
+        {
+            var ground = Instantiate(_board.ItemGroundPrefab);
+            var transform = ground.transform;
+
+            transform.parent = this.transform;
+            transform.Reset();
+            transform.localScale = Vector3.one * _board.ItemSize;
+            transform.localPosition = Vector3.forward * (_board.ItemSize + _board.Spacing) * i;
+
+            _grounds[i] = transform;
+        }
     }
 
     void UpdateModelTransform()
