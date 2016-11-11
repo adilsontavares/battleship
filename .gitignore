@@ -5,5 +5,7 @@
  
 .vs/
  
-Temp/
+[Ll]ibrary/
+[Tt]emp/
+[Bb]uilds/
 obj/
