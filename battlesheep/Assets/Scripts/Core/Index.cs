@@ -1,7 +1,9 @@
-﻿public class Index
+﻿public struct Index
 {
     public int I;
     public int J;
+
+    public static Index Invalid { get { return new Index(-1, -1); } }  
 
     public Index(int i, int j)
     {

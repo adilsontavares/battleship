@@ -11,9 +11,27 @@ public enum BoardItemDirection
 public class BoardItem : MonoBehaviour
 {
     Board _board { get { return Board.Main; } }
+    public Board Board { get { return _board; } }
 
-    public Transform Model;
-    public Index Index;
+    public BoardItemGround Ground { get { return GetComponent<BoardItemGround>(); } }
+
+    Transform _model;
+
+    [SerializeField]
+    float _moveSpeed = 15f; 
+
+    public GameObject ModelPrefab;
+
+    private Index _index;
+    public Index Index
+    {
+        get { return _index; }
+        set 
+        {
+            _index = value;
+            IndexDidChange();
+        }
+    }
 
     [Range(1, 6)]
     public int Size = 2;
@@ -46,18 +64,27 @@ public class BoardItem : MonoBehaviour
 
     void Start()
     {
-        if (Model == null)
-            Model = transform.GetChild(0);
-
         Debug.Assert(_board != null, "No board was found.");
-        Debug.Assert(Model != null, "BoardItem has no Model.");
+        Debug.Assert(ModelPrefab != null, "BoardItem has no Model.");
 
-        Model.Reset();
-        UpdateModelTransform();
+        CreateModel();
 
         transform.localRotation = GetModelRotation();
+    }
 
-        CreateGrounds();
+    void IndexDidChange()
+    {
+    }
+
+    void CreateModel()
+    {
+        var model = (GameObject)Instantiate(ModelPrefab);
+        
+        _model = model.transform;
+        _model.parent = this.transform;
+        _model.Reset();
+
+        _model.transform.localPosition = Vector3.forward * ((Board.ItemSize + Board.Spacing) * (Size - 1)) * 0.5f;
     }
 
     public Index[] GetIndexes()
@@ -67,7 +94,7 @@ public class BoardItem : MonoBehaviour
         for (int i = 0; i < indexes.Length; ++i)
         {
             if (Direction == BoardItemDirection.Horizontal)
-                indexes[i] = new Index(Index.I, Index.J + i);
+                indexes[i] = new Index(Index.I, Index.J - i);
             else
                 indexes[i] = new Index(Index.I + i, Index.J);
         }
@@ -77,19 +104,16 @@ public class BoardItem : MonoBehaviour
 
     public bool ContainsIndex(Index index)
     {
-        if (index.I < Index.I || index.J < Index.J)
-            return false;
-
         if (Direction == BoardItemDirection.Horizontal)
-            return index.I == Index.I && index.J < (Index.J + Size);
+            return index.I == Index.I && index.J > (Index.J - Size) && index.J <= Index.J;
 
         if (Direction == BoardItemDirection.Vertical)
-            return index.I < (Index.I + Size) && index.J == Index.J;
+            return index.J == Index.J && index.I >= Index.I && index.I < (Index.I + Size);
 
         return false;
     }
 
-    void CreateGrounds()
+    void CreateGround()
     {
         _grounds = new Transform[Size];
 
@@ -107,21 +131,22 @@ public class BoardItem : MonoBehaviour
         }
     }
 
-    void UpdateModelTransform()
-    {
-        Model.localPosition = Vector3.forward * (-_board.ItemSize * 0.5f - _board.Spacing * 0.5f + Length * 0.5f);
-    }
-
-    Quaternion GetModelRotation()
+    public Quaternion GetModelRotation()
     {
         Quaternion rotation = Quaternion.identity;
 
         if (_direction == BoardItemDirection.Horizontal)
-            rotation = Quaternion.AngleAxis(90f, Vector3.up);
+            rotation = Quaternion.AngleAxis(-180f, Vector3.up);
         else if (_direction == BoardItemDirection.Vertical)
-            rotation = Quaternion.identity;
+            rotation = Quaternion.AngleAxis(90f, Vector3.up);
 
         return rotation;
+    }
+
+    void Update()
+    {
+        var targetPosition = _board.PositionForIndex(_index);
+        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * _moveSpeed);
     }
 
     void DirectionDidChange()

@@ -1,44 +1,77 @@
-﻿using Tween.Animation;
-using Tween.Animation.Ease;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BoardPlacer : MonoBehaviour
 {
-    public Board Board;
+    public delegate void BeginPlaceItemCallback(BoardItem item);
+    public delegate void PlaceItemCallback(BoardItem item);
+    public delegate void CancelPlaceItemCallback(BoardItem item);
+
+    public BeginPlaceItemCallback OnBeginPlaceItem;
+    public PlaceItemCallback OnPlaceItem;
+    public CancelPlaceItemCallback OnCancelPlaceItem; 
+
+    public static BoardPlacer Main { get { return Object.FindObjectOfType<BoardPlacer>(); } }
+
+    private Board _board;
 
     [SerializeField]
-    public BoardItem _item;
+    private BoardItem _item;
     
-    [SerializeField]
-    private float _moveItemSpeed = 15f;
+    private Transform _itemParent;
 
     public KeyCode RotateItemKey = KeyCode.R;
     public string PlaceItemButton = "Fire1";
 
-    bool _placing = false;
-    int _i;
-    int _j;
+    public Material GroundValidMaterial;
+    public Material GroundInvalidMaterial;
 
-    Vector3 _moveDestin;
+    bool _placing = false;
+    public bool IsPlacing { get { return _placing; } } 
+
     Camera _mainCamera;
 
     void Start()
     {
+        _board = Board.Main;
         _mainCamera = Camera.main;
 
-        Debug.Assert(Board != null, "BoardPlacer must have a Board to manage.");
+        CreateItemParent();
+
+        Debug.Assert(_board != null, "BoardPlacer must have a Board to manage.");
 
         if (_item != null)
             BeginPlacement(_item);
+    }
+
+    void CreateItemParent()
+    {
+        var go = new GameObject("Current");
+        
+        _itemParent = go.transform;
+        _itemParent.parent = this.transform;
+        _itemParent.Reset();
     }
 
     public void BeginPlacement(BoardItem item)
     {
         if (_placing)
             return;
+
+        if (item == null)
+        {
+            Debug.LogWarning("Cannot place a BoardItem that is null.");
+            return;
+        }
+
         _placing = true;
 
         _item = item;
+        _item.transform.parent = _itemParent;
+
+        _item.Ground.Show();
+
+        if (OnBeginPlaceItem != null)
+            OnBeginPlaceItem(_item);
     }
 
     public void CancelPlacement()
@@ -46,11 +79,38 @@ public class BoardPlacer : MonoBehaviour
         if (!_placing)
             return;
         _placing = false;
+        
+        Destroy(_item.gameObject);
 
-        _item = null;
-        _i = -1;
-        _j = -1;
+        FinishPlacement(false);
     }
+
+    void Place()
+    {
+        if (!_placing)
+            return;
+
+        if (_board.CanPlaceItem(_item, _item.Index))
+        {
+            _placing = false;
+            _board.PlaceItem(_item, _item.Index);
+
+            FinishPlacement(true);
+        }
+    }
+
+    void FinishPlacement(bool success)
+    {
+        var item = _item;
+
+        _item.Ground.Hide();
+        _item = null;
+
+        if (success && OnPlaceItem != null)
+            OnPlaceItem(item);
+        else if (!success && OnCancelPlaceItem != null)
+            OnCancelPlaceItem(item); 
+    } 
 
     void Update()
     {
@@ -59,22 +119,11 @@ public class BoardPlacer : MonoBehaviour
             if (Input.GetKeyDown(RotateItemKey))
                 _item.Rotate();
 
+            UpdatePlacement();
+
             if (Input.GetButtonDown(PlaceItemButton))
                 Place();
-
-            UpdatePlacement();
         }
-    }
-
-    void Place()
-    {
-        if (!_placing)
-            return;
-
-        //if (Board.CanPlaceItem(_item, _i, _j))
-        //{
-
-        //}
     }
 
     void UpdatePlacement()
@@ -84,40 +133,41 @@ public class BoardPlacer : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, 1 << LayerMask.NameToLayer("Board")))
         {
-            int i;
-            int j;
+            Index index;
 
             var offset = Vector3.zero;            
             var point = hit.point + offset;
 
-            Board.IndexForPosition(point, out i, out j);
-
-            var min = 0;
-            var max = Board.Size - _item.Size;
+            index = _board.IndexForPosition(point);
 
             if (_item.Direction == BoardItemDirection.Horizontal)
-                i = Mathf.Clamp(i, min, max);
+                index.J = Mathf.Clamp(index.J, _item.Size - 1, _board.Size);
             else if (_item.Direction == BoardItemDirection.Vertical)
-                j = Mathf.Clamp(j, min, max);
+                index.I = Mathf.Clamp(index.I, 0, _board.Size - _item.Size);
 
-            if (i != _i || j != _j)
+            if (index != _item.Index)
             {
-                _i = i;
-                _j = j;
+                _item.Index = index;
 
-                var position = Board.PositionForIndex(i, j);
-                _moveDestin = position;
+                var validPosition = _board.CanPlaceItem(_item, index);
+                var groundMaterial = validPosition ? GroundValidMaterial : GroundInvalidMaterial;
+
+                _item.Ground.Material = groundMaterial;
             }
         }
-
-        _item.transform.position = Vector3.Lerp(_item.transform.position, _moveDestin, Time.deltaTime * _moveItemSpeed);
     }
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        if (!Application.isPlaying)
+            return;
 
-        var position = Board.PositionForIndex(_i, _j);
-        Gizmos.DrawCube(position, Vector3.one);
+        if (_item != null)
+        {
+            Gizmos.color = Color.green;
+
+            var position = _board.PositionForIndex(_item.Index);
+            Gizmos.DrawCube(position, Vector3.one);
+        }
     }
 }

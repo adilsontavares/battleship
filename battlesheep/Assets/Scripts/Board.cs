@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Board : MonoBehaviour
@@ -28,11 +29,16 @@ public class Board : MonoBehaviour
 
     private Transform _waterParent;
 
-    private BoardItem[] _items;
+    private List<BoardItem> _items;
 
     public float Width { get { return (_size * _itemSize) + (_size - 1f) * _spacing; } }
 
     public float Height { get { return (_size * _itemSize) + (_size - 1f) * _spacing; } }
+
+    void Awake()
+    {
+        _items = new List<BoardItem>();
+    }
 
     void Start()
     {
@@ -51,7 +57,7 @@ public class Board : MonoBehaviour
         if (_items == null)
             return; 
 
-        for (int i = 0; i < _items.GetLength(0); ++i)
+        for (int i = 0; i < _items.Count; ++i)
             Destroy(_items[i].gameObject);
     }
 
@@ -71,7 +77,7 @@ public class Board : MonoBehaviour
             for (int j = 0; j < _size; ++j)
             {
                 var water = Instantiate(WaterPrefab);
-                var position = PositionForIndex(i, j);
+                var position = PositionForIndex(new Index(i, j));
 
                 water.transform.parent = _waterParent;
                 water.transform.Reset();
@@ -101,19 +107,31 @@ public class Board : MonoBehaviour
     {
         foreach (var temp in _items)
         {
-            var indexes = item.GetIndexes();
-
-            foreach (var ind in indexes)
+            foreach (var cur in temp.GetIndexes())
             {
-                if (ind == index)
-                    return false;
+                foreach (var ind in item.GetIndexes())
+                {
+                    if (cur == ind)
+                        return false;
+                }
             }
         }
 
         return true;
     }
 
-    public void IndexForPosition(Vector3 position, out int i, out int j)
+    public bool PlaceItem(BoardItem item, Index index)
+    {
+        if (!CanPlaceItem(item, index))
+            return false;
+
+        item.Index = index; 
+        _items.Add(item);
+
+        return true;
+    }
+
+    public Index IndexForPosition(Vector3 position)
     {
         var start = new Vector3(-Width * 0.5f + _itemSize * 0.5f, 0, -Height * 0.5f + _itemSize * 0.5f);
         var end = new Vector3(Width * 0.5f - _itemSize * 0.5f, 0, Height * 0.5f - _itemSize * 0.5f);
@@ -124,13 +142,16 @@ public class Board : MonoBehaviour
         result.x = Mathf.Clamp01(pos.x / diff.x);
         result.z = Mathf.Clamp01(pos.z / diff.z);
 
-        i = Mathf.RoundToInt(result.x * (_size - 1f));
-        j = Mathf.RoundToInt(result.z * (_size - 1f));
+        return new Index
+        (
+            Mathf.RoundToInt(result.x * (_size - 1f)),
+            Mathf.RoundToInt(result.z * (_size - 1f))
+        );
     }
 
-    public Vector3 PositionForIndex(int i, int j, BoardItemDirection direction, bool odd)
+    public Vector3 PositionForIndex(Index index, BoardItemDirection direction, bool odd)
     {
-        var position = PositionForIndex(i, j);
+        var position = PositionForIndex(index);
 
         if (odd)
         {
@@ -143,14 +164,14 @@ public class Board : MonoBehaviour
         return position;
     }
 
-    public Vector3 PositionForIndex(int i, int j)
+    public Vector3 PositionForIndex(Index index)
     {
         var offsetX = Width * -0.5f;
         var offsetZ = Height * -0.5f;
 
         var position = new Vector3();
-        position.x = offsetX + (_itemSize + _spacing) * i + _itemSize * 0.5f;
-        position.z = offsetZ + (_itemSize + _spacing) * j + _itemSize * 0.5f;
+        position.x = offsetX + (_itemSize + _spacing) * index.I + _itemSize * 0.5f;
+        position.z = offsetZ + (_itemSize + _spacing) * index.J + _itemSize * 0.5f;
 
         return position;
     }
@@ -171,49 +192,6 @@ public class Board : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        //var offsetX = Width * -0.5f;
-        //var offsetZ = Height * -0.5f;
-        //var offset = new Vector3(offsetX, 0, offsetZ);
-        //var delta = new Vector3(_itemSize + _separator, 0, _itemSize + _separator);
-
-        //Gizmos.color = Color.black.WithAlpha(0.5f);
-
-        //// Draws vertical lines
-        //for (int i = 0; i <= _size; ++i)
-        //{
-        //    // Begin
-        //    var from1 = offset + new Vector3(delta.x * i, 0, 0);
-        //    var to1 = offset  + new Vector3(delta.x * i, 0, Width);
-
-        //    // End
-        //    var from2 = from1 + Vector3.left * _separator;
-        //    var to2 = to1  + Vector3.left * _separator;
-
-        //    if (i != _size)
-        //        Gizmos.DrawLine(from1, to1);
-
-        //    if (i != 0)
-        //        Gizmos.DrawLine(from2, to2);
-        //}
-
-        //// Draws horizontal lines
-        //for (int i = 0; i <= _size; ++i)
-        //{
-        //    // Begin
-        //    var from1 = offset + new Vector3(0, 0, delta.z * i);
-        //    var to1 = offset  + new Vector3(Height, 0, delta.z * i);
-
-        //    // End
-        //    var from2 = from1 + Vector3.back * _separator;
-        //    var to2 = to1  + Vector3.back * _separator;
-
-        //    if (i != _size)
-        //        Gizmos.DrawLine(from1, to1);
-
-        //    if (i != 0)
-        //        Gizmos.DrawLine(from2, to2);
-        //}
-
         Gizmos.color = Color.blue.WithAlpha(0.3f);
 
         var slotScale = Vector3.one * _itemSize;
@@ -224,7 +202,7 @@ public class Board : MonoBehaviour
         {
             for (int j = 0; j < _size; ++j)
             {
-                var position = PositionForIndex(i, j);
+                var position = PositionForIndex(new Index(i, j));
                 Gizmos.DrawCube(position, slotScale);
             }
         }
