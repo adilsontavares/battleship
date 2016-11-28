@@ -1,15 +1,44 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class Ship : MonoBehaviour {
+public class Ship : MonoBehaviour
+{
+    public Index Index;
+    public Index IndexEnd { get { return Direction == ShipDirection.Horizontal ? new Index(Index.Line, Index.Column + Size) : new Index(Index.Line + Size, Index.Column); } }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public ShipDirection Direction;
+
+    public int Size;
+
+    public Index[] GetIndexes()
+    {
+        var indexes = new Index[Size];
+
+        for (int i = 0; i < Size; ++i)
+        {
+            if (Direction == ShipDirection.Horizontal)
+                indexes[i] = new Index(Index.Line, Index.Column + i);
+            else
+                indexes[i] = new Index(Index.Line + i, Index.Column);
+        }
+
+        return indexes;
+    }
+
+    public bool ContainsIndex(Index index)
+    {
+        if (Direction == ShipDirection.Horizontal)
+            return index.Line == this.Index.Line && index.Column >= this.Index.Column && index.Column < (this.Index.Column + Size);
+
+        return index.Column == this.Index.Column && index.Line >= this.Index.Line && index.Line < (this.Index.Line + Size);
+    }
+
+    public bool Intersects(Ship item)
+    {
+        if (item.IndexEnd.Line < Index.Line) return false;
+        if (item.IndexEnd.Column < Index.Column) return false;
+        if (item.Index.Line > IndexEnd.Line) return false;
+        if (item.Index.Column > IndexEnd.Column) return false;
+
+        return true;
+    }
 }
