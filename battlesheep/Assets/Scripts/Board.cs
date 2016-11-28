@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-    public static Board Main {  get { return FindObjectOfType<Board>(); } }
+    public static Board Main {  get { return ((GameObject)GameObject.FindGameObjectWithTag("Main Board")).GetComponent<Board>(); } }
     
     public GameObject WaterPrefab;
     public GameObject ItemGroundPrefab;
@@ -30,6 +30,7 @@ public class Board : MonoBehaviour
     private Transform _waterParent;
 
     private List<BoardItem> _items;
+    public List<BoardItem> Items { get { return _items; } }
 
     public float Width { get { return (_size * _itemSize) + (_size - 1f) * _spacing; } }
 

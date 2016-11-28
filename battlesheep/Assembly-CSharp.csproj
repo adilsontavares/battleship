@@ -10,10 +10,11 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <BaseDirectory>Assets</BaseDirectory>
-  </PropertyGroup>
+	<LangVersion>default</LangVersion>
+</PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
@@ -23,7 +24,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-  </PropertyGroup>
+	<LangVersion>default</LangVersion>
+</PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -31,7 +33,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169</NoWarn>
-  </PropertyGroup>
+	<LangVersion>default</LangVersion>
+</PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.XML" />
@@ -86,6 +89,8 @@
      <Compile Include="Assets\Scripts\Animations\Extensions.cs" />
      <Compile Include="Assets\Scripts\Animations\Helpers\AnimationHelper.cs" />
      <Compile Include="Assets\Scripts\Animations\Interfaces\IAnimationEase.cs" />
+     <Compile Include="Assets\Scripts\Authentication\LoginPanel.cs" />
+     <Compile Include="Assets\Scripts\Authentication\RegisterPanel.cs" />
      <Compile Include="Assets\Scripts\Board.cs" />
      <Compile Include="Assets\Scripts\BoardItem.cs" />
      <Compile Include="Assets\Scripts\BoardItemGround.cs" />
@@ -97,7 +102,16 @@
      <Compile Include="Assets\Scripts\Debug\PrepareBoardController.cs" />
      <Compile Include="Assets\Scripts\Extensions\ColorExtensions.cs" />
      <Compile Include="Assets\Scripts\Extensions\TransformExtensions.cs" />
+     <Compile Include="Assets\Scripts\General\LiveForever.cs" />
+     <Compile Include="Assets\Scripts\Multiplayer\SocketListener.cs" />
+     <Compile Include="Assets\Scripts\Multiplayer\SocketManager.cs" />
+     <Compile Include="Assets\Scripts\Multiplayer\SocketMessage.cs" />
+     <Compile Include="Assets\Scripts\Multiplayer\SocketSender.cs" />
+     <Compile Include="Assets\Scripts\Scenes\SceneLoginController.cs" />
      <Compile Include="Assets\Scripts\Scenes\ScenePlaceController.cs" />
+     <Compile Include="Assets\Scripts\UI\MessageBox.cs" />
+     <Compile Include="Assets\Scripts\UI\MessageBoxManager.cs" />
+     <Compile Include="Assets\Scripts\UI\Panel.cs" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
@@ -201,5 +215,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

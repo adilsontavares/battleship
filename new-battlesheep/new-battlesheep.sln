@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{855682EE-C4FD-B365-3005-B179EA05DBE1}") = "new-battlesheep", "Assembly-CSharp.csproj", "{588DAF5B-B27F-BF36-BFBD-BBAB2F47FD36}"
+EndProject
+Project("{855682EE-C4FD-B365-3005-B179EA05DBE1}") = "new-battlesheep", "Assembly-CSharp-Editor.csproj", "{B26C8F1C-4741-83D3-DCC7-2659574C38B2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{588DAF5B-B27F-BF36-BFBD-BBAB2F47FD36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588DAF5B-B27F-BF36-BFBD-BBAB2F47FD36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588DAF5B-B27F-BF36-BFBD-BBAB2F47FD36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588DAF5B-B27F-BF36-BFBD-BBAB2F47FD36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B26C8F1C-4741-83D3-DCC7-2659574C38B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B26C8F1C-4741-83D3-DCC7-2659574C38B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B26C8F1C-4741-83D3-DCC7-2659574C38B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B26C8F1C-4741-83D3-DCC7-2659574C38B2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
