@@ -116,12 +116,6 @@ public class Water : MonoBehaviour
         mesh.RecalculateNormals();
     }
 
-    void OnValidate()
-    {
-        if (Application.isPlaying)
-            RebuildMesh();
-    }
-
     int GetVertexIndex(int i, int j)
     {
         return i * _divisions + j;
