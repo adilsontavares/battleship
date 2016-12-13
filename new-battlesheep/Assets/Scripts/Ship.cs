@@ -2,12 +2,22 @@
 
 public class Ship : MonoBehaviour
 {
+    public Sprite ShipSprite;
+
+    public Board Board;
+
     public Index Index;
     public Index IndexEnd { get { return Direction == ShipDirection.Horizontal ? new Index(Index.Line, Index.Column + Size) : new Index(Index.Line + Size, Index.Column); } }
 
     public ShipDirection Direction;
+    
+    [Range(2, 5)]
+    public int Size = 2;
 
-    public int Size;
+    public Color GizmosColor = Color.red.WithAlpha(0.5f);
+    public bool ShowGizmos = true;
+
+    public bool IsPlaced = false;
 
     public Index[] GetIndexes()
     {
@@ -40,5 +50,48 @@ public class Ship : MonoBehaviour
         if (item.Index.Column > IndexEnd.Column) return false;
 
         return true;
+    }
+
+    public void Rotate()
+    {
+        if (Direction == ShipDirection.Horizontal)
+            Direction = ShipDirection.Vertical;
+        else
+            Direction = ShipDirection.Horizontal;
+    }
+
+    void OnDrawGizmos()
+    {
+        if (!ShowGizmos || Board == null)
+            return;
+
+        Gizmos.color = GizmosColor;
+
+        foreach (var index in GetIndexes())
+        {
+            var position = Board.PositionForIndex(index);
+
+            Gizmos.matrix = Matrix4x4.TRS(position, Board.transform.rotation, Vector3.one);
+            Gizmos.DrawCube(Vector3.zero, Vector3.one * Board.ItemSize);
+        }
+    }
+
+    void OnValidate()
+    {
+        UpdateTransform();
+    }
+
+    [ContextMenu("Update transform")]
+    public void UpdateTransform()
+    {
+        if (Board == null)
+            return;
+
+        var position = Board.PositionForShip(this);
+        var rotation = Board.RotationForShip(this);
+
+        transform.Reset();
+        transform.position = position;
+        transform.rotation = Board.transform.rotation * rotation;
     }
 }

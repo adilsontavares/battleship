@@ -6,6 +6,9 @@ public class Board : MonoBehaviour
     private List<Ship> _ships = new List<Ship>();
     public Ship[] Ships { get { return _ships.ToArray(); } }
 
+    public static Board PlayerBoard { get { return FindBoard("Player Board"); } }
+    public static Board EnemyBoard { get { return FindBoard("Enemy Board"); } }
+
     public bool DrawsGizmos = true;
     public Color GizmosColor = Color.green;
 
@@ -14,6 +17,21 @@ public class Board : MonoBehaviour
     public float ItemSize = 1f;
     public float Spacing = 0.15f;
     public int Size = 10;
+    public float SlotOffset = -0.5f;
+
+    public float Width { get { return Size * ItemSize + (Size - 1) * Spacing; } }
+    public float Height { get { return Width; } }
+
+    public static Board FindBoard(string tag)
+    {
+        var gameObject = GameObject.FindWithTag(tag);
+
+        if (gameObject == null)
+            return null;
+
+        var board = gameObject.GetComponent<Board>();
+        return board;
+    }
 
     void Start()
     {
@@ -22,17 +40,36 @@ public class Board : MonoBehaviour
 
     void CreateSlots()
     {
+        var parent = new GameObject("Slots");
+        parent.transform.SetParent(this.transform);
+        parent.transform.Reset();
+
         for (int i = 0; i < Size; ++i)
         {
             for (int j = 0; j < Size; ++j)
             {
-                var gameObject = (GameObject)Instantiate(SlotPrefab, this.transform);
+                var gameObject = (GameObject)Instantiate(SlotPrefab, parent.transform);
                 var transform = gameObject.transform;
 
                 transform.rotation = this.transform.rotation;
-                transform.position = PositionForIndex(new Index(i, j));
+                transform.position = PositionForIndex(new Index(i, j)) + Vector3.up * SlotOffset;
             }
         }
+    }
+
+    public Index FindIndex(Vector2 position)
+    {
+        var x = (position.x + Width * 0.5f) / Width;
+        var y = (position.y + Height * 0.5f) / Height;
+
+        var line = Mathf.FloorToInt(x * Size);
+        var column = Mathf.FloorToInt(y * Size);
+
+        line = Mathf.Clamp(line, 0, Size - 1);
+        column = Mathf.Clamp(column, 0, Size - 1);
+
+        var index = new Index(line, column);
+        return index;
     }
 
     public Ship ItemAt(Index index)
@@ -130,5 +167,41 @@ public class Board : MonoBehaviour
         var deltaY = ItemSize + Spacing;
 
         return transform.position + transform.rotation * new Vector3(offsetX + deltaX * index.Column, 0, offsetY + deltaY * index.Line);
+    }
+
+    public Vector3 PositionForShip(Ship ship)
+    {
+        return PositionForShip(ship, ship.Index);
+    }
+
+    public Vector3 PositionForShip(Ship ship, Index index)
+    {
+        return PositionForShip(ship.Size, ship.Direction, index);
+    }
+
+    public Vector3 PositionForShip(int size, ShipDirection direction, Index index)
+    {
+        var start = PositionForIndex(index);
+        Vector3 end;
+
+        if (direction == ShipDirection.Horizontal)
+            end = PositionForIndex(index + new Index(0, size - 1));
+        else
+            end = PositionForIndex(index + new Index(size - 1, 0));
+
+        return start + (end - start) * 0.5f;
+    }
+
+    public Quaternion RotationForShip(Ship ship)
+    {
+        return RotationForShip(ship.Direction);
+    }
+
+    public Quaternion RotationForShip(ShipDirection direction)
+    {
+        if (direction == ShipDirection.Horizontal)
+            return Quaternion.AngleAxis(90f, Vector3.up);
+
+        return Quaternion.identity;
     }
 }

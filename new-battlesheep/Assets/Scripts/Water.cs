@@ -6,7 +6,6 @@ using System.Collections;
 public class Water : MonoBehaviour
 {
     MeshFilter _meshFilter;
-    MeshRenderer _renderer;
 
     [SerializeField]
     float _size = 10f;
@@ -25,7 +24,6 @@ public class Water : MonoBehaviour
     void Awake()
     {
         _meshFilter = GetComponent<MeshFilter>();
-        _renderer = GetComponent<MeshRenderer>();
     }
 
     void Start()

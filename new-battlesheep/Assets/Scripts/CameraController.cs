@@ -4,6 +4,7 @@
 public class CameraController : MonoBehaviour
 {
     public static CameraController Main { get { return FindMainInstance(); } }
+    public static Camera MainCamera {  get { return Main.GetComponent<Camera>(); } }
 
     public Camera Camera { get { return GetComponent<Camera>(); } }
 

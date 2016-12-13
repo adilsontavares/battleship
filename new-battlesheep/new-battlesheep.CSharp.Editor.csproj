@@ -102,6 +102,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Editor\IndexInspector.cs" />
     <Compile Include="Assets\VSCode\Plugins\Editor\VSCode.cs" />
   </ItemGroup>
   <ItemGroup>

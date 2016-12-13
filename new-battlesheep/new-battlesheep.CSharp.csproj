@@ -67,14 +67,21 @@
     <Compile Include="Assets\Extensions\QuaternionExtensions.cs" />
     <Compile Include="Assets\Extensions\TransformExtensions.cs" />
     <Compile Include="Assets\Scripts\Board.cs" />
+    <Compile Include="Assets\Scripts\BoardPointer.cs" />
     <Compile Include="Assets\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\CameraFocus.cs" />
     <Compile Include="Assets\Scripts\CameraManager.cs" />
     <Compile Include="Assets\Scripts\DebugGui.cs" />
+    <Compile Include="Assets\Scripts\GlobalTest.cs" />
     <Compile Include="Assets\Scripts\Index.cs" />
+    <Compile Include="Assets\Scripts\PrefabInstantiator.cs" />
     <Compile Include="Assets\Scripts\Ship.cs" />
     <Compile Include="Assets\Scripts\ShipDirection.cs" />
+    <Compile Include="Assets\Scripts\ShipPlacer.cs" />
+    <Compile Include="Assets\Scripts\ShipSelector.cs" />
+    <Compile Include="Assets\Scripts\ShipSelectorItem.cs" />
     <Compile Include="Assets\Scripts\Water.cs" />
+    <Compile Include="Assets\Scripts\WaterSlot.cs" />
     <Compile Include="Assets\Scripts\WorldBoard.cs" />
   </ItemGroup>
   <ItemGroup>
